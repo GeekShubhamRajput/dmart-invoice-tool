@@ -8,13 +8,13 @@ loop do
   item_name = gets.chomp
 
   key_name = item_name.downcase.to_sym
-  item_rate = BilledItems::ITEAM_RATE[key_name]
+  item_rate = BilledItems::PRICE_LIST[key_name]
 
   puts 'Enter Quantity'
   item_quantity = gets.to_i
 
   item = BilledItems.new(item_name, item_quantity, item_rate)
-  BilledItems.add_item(item)
+  BilledItems.add_or_update_item(item)
 
   puts 'Do you want to add another item? (yes/no)'
   answer = gets.chomp.downcase
@@ -39,10 +39,10 @@ puts format('%-15s %-10s %-10s %-10s', 'Item', 'Quantity', 'Rate', 'Value')
 Shape.dotted_line
 
 # Print each item
-BilledItems.all_items.each do |item|
-  puts format('%-15s %-10d %-10d %-10d', item.name.capitalize, item.quantity, item.rate, item.item_price)
+BilledItems.list_items.each do |item|
+  puts format('%-15s %-10d %-10d %-10d', item.name.capitalize, item.quantity, item.rate, item.line_total)
 end
 
 Shape.dotted_line
-puts "Grand Total: #{BilledItems.grand_total}"
+puts "Grand Total: #{BilledItems.total_amount}"
 Shape.dotted_line
